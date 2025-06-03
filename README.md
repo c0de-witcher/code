@@ -390,3 +390,119 @@ int main() {
 
 
 
+
+#include <iostream>
+#include <stack>
+#include <vector>
+#include <string>
+using namespace std;
+
+// Function to check if a character is an operator
+bool isOperator(char op) {
+    return op == '+' || op == '-' || op == '*' || op == '/';
+}
+
+// Function to get precedence of operator
+int precedence(char op) {
+    if (op == '*' || op == '/') return 2;
+    if (op == '+' || op == '-') return 1;
+    return 0;
+}
+
+// Convert infix to postfix using Shunting Yard Algorithm
+vector<string> infixToPostfix(string expr) {
+    vector<string> postfix;
+    stack<char> opStack;
+    string operand = "";
+
+    for (char ch : expr) {
+        if (ch == ' ') continue;
+
+        if (isalnum(ch)) {
+            operand += ch;
+        } else {
+            if (!operand.empty()) {
+                postfix.push_back(operand);
+                operand = "";
+            }
+
+            if (isOperator(ch)) {
+                while (!opStack.empty() && precedence(opStack.top()) >= precedence(ch)) {
+                    postfix.push_back(string(1, opStack.top()));
+                    opStack.pop();
+                }
+                opStack.push(ch);
+            }
+        }
+    }
+
+    if (!operand.empty()) {
+        postfix.push_back(operand);
+    }
+
+    while (!opStack.empty()) {
+        postfix.push_back(string(1, opStack.top()));
+        opStack.pop();
+    }
+
+    return postfix;
+}
+
+// Generate Three Address Code from postfix
+void generateTAC(vector<string> postfix, string lhs) {
+    stack<string> st;
+    int tempCount = 1;
+
+    for (string token : postfix) {
+        if (token == "+" || token == "-" || token == "*" || token == "/") {
+            string op2 = st.top(); st.pop();
+            string op1 = st.top(); st.pop();
+            string temp = "t" + to_string(tempCount++);
+            cout << temp << " = " << op1 << " " << token << " " << op2 << endl;
+            st.push(temp);
+        } else {
+            st.push(token);
+        }
+    }
+
+    // Final assignment
+    cout << lhs << " = " << st.top() << endl;
+}
+
+int main() {
+    string expr;
+    cout << "Enter expression (e.g., a = b + c * d): ";
+    getline(cin, expr);
+
+    // Separate LHS and RHS
+    size_t eq = expr.find('=');
+    if (eq == string::npos) {
+        cout << "Invalid expression!" << endl;
+        return 1;
+    }
+
+    string lhs = expr.substr(0, eq);
+    string rhs = expr.substr(eq + 1);
+
+    // Trim spaces
+    lhs.erase(remove(lhs.begin(), lhs.end(), ' '), lhs.end());
+    rhs.erase(remove(rhs.begin(), rhs.end(), ' '), rhs.end());
+
+    // Generate TAC
+    vector<string> postfix = infixToPostfix(rhs);
+    cout << "\nThree Address Code:\n";
+    generateTAC(postfix, lhs);
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+

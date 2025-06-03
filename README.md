@@ -232,3 +232,50 @@ int main() {
     closegraph();
     return 0;
 }
+
+
+
+
+
+//flood fill 
+#include <graphics.h>
+#include <conio.h>
+#include <iostream.h>
+
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "C:\\Turboc3\\BGI");
+
+    int n;
+    cout << "Enter number of vertices: ";
+    cin >> n;
+
+   
+    int points[20]; 
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter coordinates of vertex " << i + 1 << " (x y): ";
+        cin >> points[2 * i] >> points[2 * i + 1];
+    }
+
+  
+    points[2 * n] = points[0];
+    points[2 * n + 1] = points[1];
+
+    setcolor(WHITE); 
+    drawpoly(n + 1, points);
+
+    setfillstyle(SOLID_FILL, GREEN);
+
+    
+    int x, y;
+    cout << "Enter seed point inside the polygon (x y): ";
+    cin >> x >> y;
+
+    floodfill(x, y, WHITE); 
+
+    getch();
+    closegraph();
+    return 0;
+}

@@ -42,3 +42,61 @@ int main() {
     closegraph();
     return 0;
 }
+
+
+
+
+
+
+//DDA 
+#include <graphics.h>
+#include <conio.h>
+#include <iostream.h>
+#include <math.h>  
+
+
+int roundOff(float num) {
+    return int(num + 0.5);
+}
+
+
+int maxValue(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+void drawLineDDA(int x0, int y0, int x1, int y1) {
+    int dx = x1 - x0;
+    int dy = y1 - y0;
+
+    int steps = maxValue(abs(dx), abs(dy));
+
+    float xIncrement = dx / (float)steps;
+    float yIncrement = dy / (float)steps;
+
+    float x = x0;
+    float y = y0;
+
+    for (int i = 0; i <= steps; i++) {
+        putpixel(roundOff(x), roundOff(y), WHITE);
+        x += xIncrement;
+        y += yIncrement;
+    }
+}
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "C:\\Turboc3\\BGI");
+
+    int x0, y0, x1, y1;
+    cout << "Enter starting point (x0 y0): ";
+    cin >> x0 >> y0;
+    cout << "Enter ending point (x1 y1): ";
+    cin >> x1 >> y1;
+
+    drawLineDDA(x0, y0, x1, y1);
+
+    getch();
+    closegraph();
+    return 0;
+}
+

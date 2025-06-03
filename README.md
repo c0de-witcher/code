@@ -339,3 +339,48 @@ int main() {
     return 0;
 }
 
+
+//2d translation
+#include <graphics.h>
+#include <conio.h>
+#include <iostream.h>
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "C:\\Turboc3\\BGI");
+
+    int n;
+    cout << "Enter number of vertices: ";
+    cin >> n;
+
+    int x[20], y[20];
+    cout << "Enter coordinates of vertices:\n";
+    for (int k = 0; k < n; k++) {
+        cout << "Vertex " << k + 1 << " (x y): ";
+        cin >> x[k] >> y[k];
+    }
+
+    int tx, ty;
+    cout << "Enter translation factors (Tx Ty): ";
+    cin >> tx >> ty;
+
+    
+    setcolor(WHITE);
+    for (int i = 0; i < n - 1; i++) {
+        line(x[i], y[i], x[i + 1], y[i + 1]);
+    }
+    line(x[n - 1], y[n - 1], x[0], y[0]); 
+
+    
+    setcolor(GREEN);
+    for (int j = 0; j < n - 1; j++) {
+        line(x[j] + tx, y[j] + ty, x[j + 1] + tx, y[j + 1] + ty);
+    }
+    line(x[n - 1] + tx, y[n - 1] + ty, x[0] + tx, y[0] + ty);
+
+    getch();
+    closegraph();
+    return 0;
+}
+
+

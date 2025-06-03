@@ -279,3 +279,63 @@ int main() {
     closegraph();
     return 0;
 }
+
+
+
+
+
+//boundary fill
+#include <graphics.h>
+#include <conio.h>
+#include <iostream.h>
+
+
+
+void boundaryFill(int x, int y, int fill_color, int boundary_color) {
+    int current = getpixel(x, y);
+    if (current != boundary_color && current != fill_color) {
+        putpixel(x, y, fill_color);
+
+        boundaryFill(x + 1, y, fill_color, boundary_color);
+        boundaryFill(x - 1, y, fill_color, boundary_color);
+        boundaryFill(x, y + 1, fill_color, boundary_color);
+        boundaryFill(x, y - 1, fill_color, boundary_color);
+    }
+}
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "C:\\Turboc3\\BGI");
+
+    int n;
+    cout << "Enter number of vertices: ";
+    cin >> n;
+
+    int points[40];  
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter vertex " << i + 1 << " (x y): ";
+        cin >> points[2 * i] >> points[2 * i + 1];
+    }
+
+   
+    points[2 * n] = points[0];
+    points[2 * n + 1] = points[1];
+
+    setcolor(WHITE);  
+    drawpoly(n + 1, points);
+
+    int seedX, seedY;
+    cout << "Enter seed point inside the polygon (x y): ";
+    cin >> seedX >> seedY;
+
+    int fill_color = GREEN;
+    int boundary_color = WHITE;
+
+    boundaryFill(seedX, seedY, fill_color, boundary_color);
+
+    getch();
+    closegraph();
+    return 0;
+}
+

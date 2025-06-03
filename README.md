@@ -273,3 +273,120 @@ int main() {
 
 
 
+
+
+
+
+
+
+#include <iostream>
+#include <stack>
+#include <vector>
+#include <string>
+using namespace std;
+
+// Function to check if top of stack matches RHS of any production
+bool reduce(stack<string>& st) {
+    // Reduce id to E
+    if (!st.empty() && st.top() == "id") {
+        st.pop();
+        st.push("E");
+        cout << "Reduce: E → id" << endl;
+        return true;
+    }
+
+    // Reduce E + E to E
+    if (st.size() >= 3) {
+        string top1 = st.top(); st.pop();
+        string top2 = st.top(); st.pop();
+        string top3 = st.top(); st.pop();
+
+        if (top1 == "E" && top2 == "+" && top3 == "E") {
+            st.push("E");
+            cout << "Reduce: E → E + E" << endl;
+            return true;
+        } else {
+            // Restore if no match
+            st.push(top3);
+            st.push(top2);
+            st.push(top1);
+        }
+    }
+
+    // Reduce E * E to E
+    if (st.size() >= 3) {
+        string top1 = st.top(); st.pop();
+        string top2 = st.top(); st.pop();
+        string top3 = st.top(); st.pop();
+
+        if (top1 == "E" && top2 == "*" && top3 == "E") {
+            st.push("E");
+            cout << "Reduce: E → E * E" << endl;
+            return true;
+        } else {
+            st.push(top3);
+            st.push(top2);
+            st.push(top1);
+        }
+    }
+
+    return false;
+}
+
+int main() {
+    string input;
+    cout << "Enter expression with space (e.g., id + id * id): ";
+    getline(cin, input);
+
+    // Tokenize the input by space
+    vector<string> tokens;
+    string token;
+    for (char c : input) {
+        if (c == ' ') {
+            if (!token.empty()) {
+                tokens.push_back(token);
+                token.clear();
+            }
+        } else {
+            token += c;
+        }
+    }
+    if (!token.empty()) tokens.push_back(token);
+
+    stack<string> st;
+    int i = 0;
+
+    cout << "\n--- Parsing Steps ---\n";
+
+    while (i < tokens.size()) {
+        // Shift
+        st.push(tokens[i]);
+        cout << "Shift: " << tokens[i] << endl;
+        i++;
+
+        // Try reducing as much as possible after each shift
+        while (reduce(st));
+    }
+
+    // Final reduction
+    while (reduce(st));
+
+    if (st.size() == 1 && st.top() == "E") {
+        cout << "\nParsing successful: Input accepted." << endl;
+    } else {
+        cout << "\nParsing failed: Input not accepted." << endl;
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+

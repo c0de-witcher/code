@@ -384,3 +384,48 @@ int main() {
 }
 
 
+
+
+//2d scaling#include <graphics.h>
+#include <conio.h>
+#include <iostream.h>
+
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "C:\\Turboc3\\BGI");
+
+    int n;
+    cout << "Enter number of vertices: ";
+    cin >> n;
+
+    int x[20], y[20];
+    cout << "Enter coordinates of vertices:\n";
+    for (int i = 0; i < n; i++) {
+        cout << "Vertex " << i + 1 << " (x y): ";
+        cin >> x[i] >> y[i];
+    }
+
+    float sx, sy;
+    cout << "Enter scaling factors (Sx Sy): ";
+    cin >> sx >> sy;
+
+    
+    setcolor(WHITE);
+    for (int ij = 0; ij < n - 1; ij++) {
+        line(x[ij], y[ij], x[ij + 1], y[ij + 1]);
+    }
+    line(x[n - 1], y[n - 1], x[0], y[0]);
+
+   
+    setcolor(GREEN);
+    for (int ik = 0; ik < n - 1; ik++) {
+        line(x[ik] * sx, y[ik] * sy, x[ik + 1] * sx, y[ik + 1] * sy);
+    }
+    line(x[n - 1] * sx, y[n - 1] * sy, x[0] * sx, y[0] * sy);
+
+    getch();
+    closegraph();
+    return 0;
+}
+

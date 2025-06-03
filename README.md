@@ -1,4 +1,4 @@
-//mid point line 
+//bresenham line 
 #include <graphics.h>
 #include <conio.h>
 #include <iostream.h>
@@ -48,7 +48,7 @@ int main() {
 
 
 
-//DDA 
+//DDA line
 #include <graphics.h>
 #include <conio.h>
 #include <iostream.h>
@@ -94,6 +94,60 @@ int main() {
     cin >> x1 >> y1;
 
     drawLineDDA(x0, y0, x1, y1);
+
+    getch();
+    closegraph();
+    return 0;
+}
+
+
+
+
+
+//mid point circle
+#include <graphics.h>
+#include <conio.h>
+#include <iostream.h>
+
+
+void drawCircleMidpoint(int xc, int yc, int r) {
+    int x = 0;
+    int y = r;
+    int p = 1 - r;
+
+    
+    while (x <= y) {
+        putpixel(xc + x, yc + y, WHITE);
+        putpixel(xc - x, yc + y, WHITE);
+        putpixel(xc + x, yc - y, WHITE);
+        putpixel(xc - x, yc - y, WHITE);
+        putpixel(xc + y, yc + x, WHITE);
+        putpixel(xc - y, yc + x, WHITE);
+        putpixel(xc + y, yc - x, WHITE);
+        putpixel(xc - y, yc - x, WHITE);
+
+        x++;
+
+        if (p < 0) {
+            p = p + 2 * x + 1;
+        } else {
+            y--;
+            p = p + 2 * (x - y) + 1;
+        }
+    }
+}
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "C:\\Turboc3\\BGI");
+
+    int xc, yc, r;
+    cout << "Enter center of circle (xc yc): ";
+    cin >> xc >> yc;
+    cout << "Enter radius of circle: ";
+    cin >> r;
+
+    drawCircleMidpoint(xc, yc, r);
 
     getch();
     closegraph();

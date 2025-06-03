@@ -154,3 +154,81 @@ int main() {
     return 0;
 }
 
+
+
+
+//ellipse
+#include <graphics.h>
+#include <conio.h>
+#include <iostream.h>
+
+void drawEllipseMidpoint(int xc, int yc, int rx, int ry) {
+    float x = 0;
+    float y = ry;
+
+
+    float rx2 = rx * rx;
+    float ry2 = ry * ry;
+    float twoRx2 = 2 * rx2;
+    float twoRy2 = 2 * ry2;
+
+    float px = 0;
+    float py = twoRx2 * y;
+
+    
+    float p1 = ry2 - (rx2 * ry) + (0.25 * rx2);
+    while (px < py) {
+        putpixel(xc + x, yc + y, WHITE);
+        putpixel(xc - x, yc + y, WHITE);
+        putpixel(xc + x, yc - y, WHITE);
+        putpixel(xc - x, yc - y, WHITE);
+
+        x++;
+        px += twoRy2;
+        if (p1 < 0) {
+            p1 += ry2 + px;
+        } else {
+            y--;
+            py -= twoRx2;
+            p1 += ry2 + px - py;
+        }
+    }
+
+   
+    float p2 = (ry2 * (x + 0.5) * (x + 0.5)) + (rx2 * (y - 1) * (y - 1)) - (rx2 * ry2);
+    while (y >= 0) {
+        putpixel(xc + x, yc + y, WHITE);
+        putpixel(xc - x, yc + y, WHITE);
+        putpixel(xc + x, yc - y, WHITE);
+        putpixel(xc - x, yc - y, WHITE);
+
+        y--;
+        py -= twoRx2;
+        if (p2 > 0) {
+            p2 += rx2 - py;
+        } else {
+            x++;
+            px += twoRy2;
+            p2 += rx2 - py + px;
+        }
+    }
+}
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "C:\\Turboc3\\BGI");
+
+    int xc, yc, rx, ry;
+    cout << "Enter center of ellipse (xc yc): ";
+    cin >> xc >> yc;
+    cout << "Enter x-radius (rx): ";
+    cin >> rx;
+    cout << "Enter y-radius (ry): ";
+    cin >> ry;
+
+    drawEllipseMidpoint(xc, yc, rx, ry);
+
+    getch();
+    closegraph();
+    return 0;
+}

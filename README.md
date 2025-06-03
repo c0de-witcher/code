@@ -429,3 +429,59 @@ int main() {
     return 0;
 }
 
+
+
+//2d rotation
+#include <graphics.h>
+#include <conio.h>
+#include <iostream.h>
+#include <math.h>
+
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "C:\\Turboc3\\BGI");
+
+    int n;
+    cout << "Enter number of vertices: ";
+    cin >> n;
+
+    int x[20], y[20];
+    cout << "Enter coordinates of vertices:\n";
+    for (int ih = 0; ih < n; ih++) {
+        cout << "Vertex " << ih + 1 << " (x y): ";
+        cin >> x[ih] >> y[ih];
+    }
+
+    float angle;
+    cout << "Enter angle of rotation (in degrees): ";
+    cin >> angle;
+
+    float rad = angle * 3.14159 / 180.0;  
+
+    
+    setcolor(WHITE);
+    for (int ik = 0; ik < n - 1; ik++) {
+        line(x[ik], y[ik], x[ik + 1], y[ik + 1]);
+    }
+    line(x[n - 1], y[n - 1], x[0], y[0]);
+
+    
+    setcolor(GREEN);
+    for (int i = 0; i < n - 1; i++) {
+        int x1 = x[i] * cos(rad) - y[i] * sin(rad);
+        int y1 = x[i] * sin(rad) + y[i] * cos(rad);
+        int x2 = x[i + 1] * cos(rad) - y[i + 1] * sin(rad);
+        int y2 = x[i + 1] * sin(rad) + y[i + 1] * cos(rad);
+        line(x1, y1, x2, y2);
+    }
+    int x1 = x[n - 1] * cos(rad) - y[n - 1] * sin(rad);
+    int y1 = x[n - 1] * sin(rad) + y[n - 1] * cos(rad);
+    int x2 = x[0] * cos(rad) - y[0] * sin(rad);
+    int y2 = x[0] * sin(rad) + y[0] * cos(rad);
+    line(x1, y1, x2, y2);
+
+    getch();
+    closegraph();
+    return 0;
+}

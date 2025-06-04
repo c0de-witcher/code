@@ -538,3 +538,91 @@ int main() {
     closegraph();
     return 0;
 }
+
+
+
+//3d translation
+#include <graphics.h>
+#include <conio.h>
+#include <iostream.h>
+
+
+// Function to project 3D point to 2D (simple isometric projection)
+void project(int x, int y, int z, int &px, int &py) {
+    px = x - z;
+    py = y - z;
+}
+
+// Function to draw a cuboid using 8 points
+void drawCuboid(int x[], int y[], int z[], int color) {
+    int px[8], py[8];
+
+    int i;
+    for ( i = 0; i < 8; i++) {
+        project(x[i], y[i], z[i], px[i], py[i]);
+    }
+
+    setcolor(color);
+
+    // Front face
+    line(px[0], py[0], px[1], py[1]);
+    line(px[1], py[1], px[2], py[2]);
+    line(px[2], py[2], px[3], py[3]);
+    line(px[3], py[3], px[0], py[0]);
+
+    // Back face
+    line(px[4], py[4], px[5], py[5]);
+    line(px[5], py[5], px[6], py[6]);
+    line(px[6], py[6], px[7], py[7]);
+    line(px[7], py[7], px[4], py[4]);
+
+    // Connect front and back
+    line(px[0], py[0], px[4], py[4]);
+    line(px[1], py[1], px[5], py[5]);
+    line(px[2], py[2], px[6], py[6]);
+    line(px[3], py[3], px[7], py[7]);
+}
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "C:\\Turboc3\\BGI");
+
+    int x[8], y[8], z[8];
+    int j;
+
+    cout << "Enter coordinates of the cuboid (8 points: x y z for each):\n";
+    for ( j = 0; j < 8; j++) {
+        cout << "Point " << j << " (x y z): ";
+        cin >> x[j] >> y[j] >> z[j];
+    }
+
+    // Draw original cuboid
+    drawCuboid(x, y, z, WHITE);
+    outtextxy(10, 10, "Original Cuboid - WHITE");
+
+    getch();
+
+    // Translation vector
+    int tx, ty, tz;
+    cout << "Enter translation vector (tx ty tz): ";
+    cin >> tx >> ty >> tz;
+
+    // Apply translation
+    int k;
+    for ( k = 0; k < 8; k++) {
+        x[k] += tx;
+        y[k] += ty;
+        z[k] += tz;
+    }
+
+    cleardevice();
+
+    // Draw translated cuboid
+    drawCuboid(x, y, z, GREEN);
+    outtextxy(10, 10, "Translated Cuboid - GREEN");
+
+    getch();
+    closegraph();
+    return 0;
+}
+

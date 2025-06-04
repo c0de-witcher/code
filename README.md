@@ -485,3 +485,56 @@ int main() {
     closegraph();
     return 0;
 }
+
+
+
+//2d_shearing
+#include <graphics.h>
+#include <conio.h>
+#include <iostream.h>
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "C:\\Turboc3\\BGI");
+
+    int n;
+    cout << "Enter number of vertices: ";
+    cin >> n;
+
+    int x[20], y[20];
+    cout << "Enter coordinates of vertices:\n";
+    for (int ia = 0; ia < n; ia++) {
+        cout << "Vertex " << ia + 1 << " (x y): ";
+        cin >> x[ia] >> y[ia];
+    }
+
+    float shx, shy;
+    cout << "Enter shearing factors (shx shy): ";
+    cin >> shx >> shy;
+
+   
+    setcolor(WHITE);
+    for (int ic = 0; ic < n - 1; ic++) {
+        line(x[ic], y[ic], x[ic + 1], y[ic + 1]);
+    }
+    line(x[n - 1], y[n - 1], x[0], y[0]);
+
+   
+    setcolor(GREEN);
+    for (int i = 0; i < n - 1; i++) {
+        int x1 = x[i] + shx * y[i];
+        int y1 = y[i] + shy * x[i];
+        int x2 = x[i + 1] + shx * y[i + 1];
+        int y2 = y[i + 1] + shy * x[i + 1];
+        line(x1, y1, x2, y2);
+    }
+    int x1 = x[n - 1] + shx * y[n - 1];
+    int y1 = y[n - 1] + shy * x[n - 1];
+    int x2 = x[0] + shx * y[0];
+    int y2 = y[0] + shy * x[0];
+    line(x1, y1, x2, y2);
+
+    getch();
+    closegraph();
+    return 0;
+}
